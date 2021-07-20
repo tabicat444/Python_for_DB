@@ -1,0 +1,50 @@
+--Set up for Q1
+DROP TABLE IF EXISTS my_query;
+
+CREATE TABLE "my_query" (
+"show_id" INTEGER,
+"title" TEXT,
+"rating" TEXT,
+"listed_in" TEXT,
+"release_year" INTEGER
+
+);
+
+INSERT INTO my_query 
+SELECT movies_info_1.show_id, movies_info_1.title, movies_info_2.rating, movies_info_1.listed_in, movies_info_2.release_year 
+FROM movies_info_1 INNER JOIN movies_info_2 ON (movies_info_1.show_id = movies_info_2.show_id);
+
+
+--Q2
+SELECT my_query.listed_in, Count(my_query.listed_in) AS CountOflisted_in FROM my_query 
+GROUP BY my_query.listed_in 
+ORDER BY Count(my_query.listed_in) DESC;
+
+--Q5
+SELECT my_query.listed_in, Count(my_query.listed_in) AS CountOflisted_in
+FROM my_query
+GROUP BY my_query.listed_in, my_query.rating, my_query.release_year
+HAVING (((my_query.rating)="TV-MA") AND ((my_query.release_year)=2019))
+ORDER BY Count(my_query.listed_in) DESC , my_query.release_year DESC;
+
+--Extra Credit 
+DROP TABLE IF EXISTS my_query;
+
+CREATE TABLE "my_query" (
+"show_id" INTEGER,
+"type" TEXT,
+"rating" TEXT,
+"country" TEXT,
+"release_year" INTEGER
+
+);
+INSERT INTO my_query 
+SELECT movies_info_1.show_id, movies_info_1.type, movies_info_2.rating, movies_info_1.country, movies_info_2.release_year 
+FROM movies_info_1 INNER JOIN movies_info_2 ON (movies_info_1.show_id = movies_info_2.show_id);
+
+
+SELECT my_query.country, my_query.type, Count(my_query.country) AS Countrycount
+FROM my_query
+GROUP BY my_query.country, my_query.type, my_query.rating, my_query.release_year
+HAVING (((my_query.rating)="TV-14") AND ((my_query.release_year)=2019))
+ORDER BY Count(my_query.country) DESC , my_query.release_year DESC;
